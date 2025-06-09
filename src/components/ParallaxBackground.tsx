@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 
 const ParallaxBackground = () => {
@@ -9,79 +10,33 @@ const ParallaxBackground = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Neural network structure - Input layer (left), Hidden layers (middle), Output layer (right)
-  const neuralNetwork = {
-    inputLayer: [
-      { id: 'i1', x: 15, y: 20, label: 'z₁' },
-      { id: 'i2', x: 15, y: 35, label: 'z₂' },
-      { id: 'i3', x: 15, y: 50, label: 'z₃' },
-      { id: 'i4', x: 15, y: 65, label: 'z₄' },
-      { id: 'i5', x: 15, y: 80, label: 'z₅' }
-    ],
-    hiddenLayer1: [
-      { id: 'h1', x: 40, y: 25 },
-      { id: 'h2', x: 40, y: 40 },
-      { id: 'h3', x: 40, y: 55 },
-      { id: 'h4', x: 40, y: 70 }
-    ],
-    hiddenLayer2: [
-      { id: 'h5', x: 65, y: 30 },
-      { id: 'h6', x: 65, y: 50 },
-      { id: 'h7', x: 65, y: 70 }
-    ],
-    outputLayer: [
-      { id: 'o1', x: 85, y: 35, label: 'y₁' },
-      { id: 'o2', x: 85, y: 55, label: 'y₂' },
-      { id: 'o3', x: 85, y: 75, label: 'y₃' }
-    ]
-  };
+  // Neural network node positions
+  const networkNodes = [
+    { x: 10, y: 15, size: 8, delay: 0 },
+    { x: 25, y: 25, size: 6, delay: 0.5 },
+    { x: 15, y: 40, size: 10, delay: 1 },
+    { x: 35, y: 35, size: 7, delay: 1.5 },
+    { x: 45, y: 20, size: 9, delay: 2 },
+    { x: 55, y: 45, size: 8, delay: 2.5 },
+    { x: 70, y: 30, size: 6, delay: 3 },
+    { x: 80, y: 50, size: 11, delay: 3.5 },
+    { x: 65, y: 65, size: 7, delay: 4 },
+    { x: 85, y: 15, size: 9, delay: 4.5 },
+    { x: 90, y: 75, size: 8, delay: 5 },
+    { x: 20, y: 70, size: 10, delay: 5.5 },
+    { x: 40, y: 80, size: 6, delay: 6 },
+    { x: 75, y: 85, size: 8, delay: 6.5 }
+  ];
 
-  // Generate connections between layers
-  const generateConnections = () => {
-    const connections = [];
-    
-    // Input to Hidden Layer 1
-    neuralNetwork.inputLayer.forEach(input => {
-      neuralNetwork.hiddenLayer1.forEach(hidden => {
-        connections.push({
-          from: input,
-          to: hidden,
-          id: `${input.id}-${hidden.id}`
-        });
-      });
-    });
-
-    // Hidden Layer 1 to Hidden Layer 2
-    neuralNetwork.hiddenLayer1.forEach(hidden1 => {
-      neuralNetwork.hiddenLayer2.forEach(hidden2 => {
-        connections.push({
-          from: hidden1,
-          to: hidden2,
-          id: `${hidden1.id}-${hidden2.id}`
-        });
-      });
-    });
-
-    // Hidden Layer 2 to Output
-    neuralNetwork.hiddenLayer2.forEach(hidden => {
-      neuralNetwork.outputLayer.forEach(output => {
-        connections.push({
-          from: hidden,
-          to: output,
-          id: `${hidden.id}-${output.id}`
-        });
-      });
-    });
-
-    return connections;
-  };
-
-  const connections = generateConnections();
-  const allNodes = [
-    ...neuralNetwork.inputLayer,
-    ...neuralNetwork.hiddenLayer1,
-    ...neuralNetwork.hiddenLayer2,
-    ...neuralNetwork.outputLayer
+  // Neural network connections
+  const networkConnections = [
+    { from: 0, to: 1 }, { from: 0, to: 2 }, { from: 1, to: 3 },
+    { from: 2, to: 3 }, { from: 3, to: 4 }, { from: 4, to: 5 },
+    { from: 5, to: 6 }, { from: 6, to: 7 }, { from: 7, to: 8 },
+    { from: 8, to: 9 }, { from: 9, to: 10 }, { from: 10, to: 11 },
+    { from: 11, to: 12 }, { from: 12, to: 13 }, { from: 1, to: 4 },
+    { from: 2, to: 5 }, { from: 3, to: 6 }, { from: 5, to: 8 },
+    { from: 6, to: 9 }, { from: 7, to: 11 }, { from: 8, to: 12 }
   ];
 
   return (
@@ -102,120 +57,87 @@ const ParallaxBackground = () => {
         }}
       ></div>
 
-      {/* Neural Network - Fixed position, no parallax */}
-      <div className="absolute inset-0 opacity-40 flex items-center justify-center">
-        <div className="relative w-4/5 h-3/5 max-w-4xl">
+      {/* Neural Network Layer */}
+      <div 
+        className="absolute inset-0 opacity-30"
+        style={{ transform: `translateY(${scrollY * 0.08}px)` }}
+      >
+        {/* Neural network connections */}
+        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="rgb(59, 130, 246)" stopOpacity="0.6" />
+              <stop offset="50%" stopColor="rgb(147, 51, 234)" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="rgb(168, 85, 247)" stopOpacity="0.4" />
+            </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+              <feMerge> 
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
           
-          {/* Neural network connections with data flow animation */}
-          <svg className="w-full h-full absolute inset-0" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="rgb(59, 130, 246)" stopOpacity="0.6" />
-                <stop offset="50%" stopColor="rgb(147, 51, 234)" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="rgb(168, 85, 247)" stopOpacity="0.4" />
-              </linearGradient>
-              
-              <linearGradient id="dataFlowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="rgb(34, 197, 94)" stopOpacity="0">
-                  <animate attributeName="stop-opacity" values="0;1;0" dur="2s" repeatCount="indefinite" />
-                </stop>
-                <stop offset="50%" stopColor="rgb(34, 197, 94)" stopOpacity="1">
-                  <animate attributeName="stop-opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="0.5s" />
-                </stop>
-                <stop offset="100%" stopColor="rgb(34, 197, 94)" stopOpacity="0">
-                  <animate attributeName="stop-opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="1s" />
-                </stop>
-              </linearGradient>
-
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                <feMerge> 
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-            </defs>
-            
-            {/* Base connections */}
-            {connections.map((connection, index) => (
+          {networkConnections.map((connection, index) => {
+            const fromNode = networkNodes[connection.from];
+            const toNode = networkNodes[connection.to];
+            return (
               <line
-                key={connection.id}
-                x1={`${connection.from.x}%`}
-                y1={`${connection.from.y}%`}
-                x2={`${connection.to.x}%`}
-                y2={`${connection.to.y}%`}
+                key={index}
+                x1={`${fromNode.x}%`}
+                y1={`${fromNode.y}%`}
+                x2={`${toNode.x}%`}
+                y2={`${toNode.y}%`}
                 stroke="url(#connectionGradient)"
                 strokeWidth="1.5"
                 filter="url(#glow)"
-              />
-            ))}
-
-            {/* Data flow lines that pulse */}
-            {connections.map((connection, index) => (
-              <line
-                key={`flow-${connection.id}`}
-                x1={`${connection.from.x}%`}
-                y1={`${connection.from.y}%`}
-                x2={`${connection.to.x}%`}
-                y2={`${connection.to.y}%`}
-                stroke="url(#dataFlowGradient)"
-                strokeWidth="3"
-                filter="url(#glow)"
-                style={{
-                  animationDelay: `${index * 0.1}s`
+                className="animate-pulse"
+                style={{ 
+                  animationDelay: `${index * 0.3}s`,
+                  animationDuration: `${2 + (index % 3)}s`
                 }}
               />
-            ))}
-          </svg>
+            );
+          })}
+        </svg>
 
-          {/* Neural network nodes */}
-          {allNodes.map((node, index) => (
+        {/* Neural network nodes */}
+        {networkNodes.map((node, index) => (
+          <div
+            key={index}
+            className="absolute rounded-full bg-gradient-to-r from-primary to-secondary animate-pulse"
+            style={{
+              left: `${node.x}%`,
+              top: `${node.y}%`,
+              width: `${node.size}px`,
+              height: `${node.size}px`,
+              transform: `translate(-50%, -50%) translateY(${scrollY * (0.05 + index * 0.002)}px)`,
+              animationDelay: `${node.delay}s`,
+              animationDuration: `${2 + (index % 4)}s`,
+              boxShadow: '0 0 10px rgba(59, 130, 246, 0.5)'
+            }}
+          ></div>
+        ))}
+
+        {/* Data flow particles along connections */}
+        {networkConnections.slice(0, 8).map((connection, index) => {
+          const fromNode = networkNodes[connection.from];
+          const toNode = networkNodes[connection.to];
+          return (
             <div
-              key={node.id}
-              className="absolute flex items-center justify-center"
+              key={`particle-${index}`}
+              className="absolute w-1 h-1 bg-accent rounded-full animate-float"
               style={{
-                left: `${node.x}%`,
-                top: `${node.y}%`,
-                transform: 'translate(-50%, -50%)'
+                left: `${fromNode.x + (toNode.x - fromNode.x) * 0.3}%`,
+                top: `${fromNode.y + (toNode.y - fromNode.y) * 0.3}%`,
+                animationDelay: `${index * 0.5}s`,
+                animationDuration: `${3 + (index % 3)}s`,
+                transform: `translateY(${scrollY * (0.03 + index * 0.01)}px)`
               }}
-            >
-              {/* Node circle */}
-              <div
-                className="rounded-full bg-gradient-to-r from-primary to-secondary border-2 border-primary/50 animate-pulse"
-                style={{
-                  width: '20px',
-                  height: '20px',
-                  animationDelay: `${index * 0.2}s`,
-                  animationDuration: '3s',
-                  boxShadow: '0 0 15px rgba(59, 130, 246, 0.5)'
-                }}
-              ></div>
-              
-              {/* Node labels for input and output layers */}
-              {node.label && (
-                <span className="absolute text-xs text-muted-foreground font-mono" 
-                      style={{
-                        left: node.x < 50 ? '-25px' : '25px',
-                        top: '50%',
-                        transform: 'translateY(-50%)'
-                      }}>
-                  {node.label}
-                </span>
-              )}
-            </div>
-          ))}
-
-          {/* Layer labels */}
-          <div className="absolute top-0 left-[15%] transform -translate-x-1/2 -translate-y-8">
-            <span className="text-sm text-muted-foreground font-semibold">Input Layer</span>
-          </div>
-          <div className="absolute top-0 left-[52.5%] transform -translate-x-1/2 -translate-y-8">
-            <span className="text-sm text-muted-foreground font-semibold">Hidden Layers</span>
-          </div>
-          <div className="absolute top-0 left-[85%] transform -translate-x-1/2 -translate-y-8">
-            <span className="text-sm text-muted-foreground font-semibold">Output Layer</span>
-          </div>
-        </div>
+            ></div>
+          );
+        })}
       </div>
 
       {/* Large floating orbs with parallax */}
@@ -237,6 +159,7 @@ const ParallaxBackground = () => {
         style={{ transform: `translate(-50%, -50%) translate(${scrollY * 0.05}px, ${scrollY * -0.12}px)` }}
       ></div>
 
+      {/* Additional orbs for more coverage */}
       <div 
         className="absolute top-3/4 left-1/3 w-72 h-72 bg-gradient-to-r from-accent/10 to-secondary/15 rounded-full blur-3xl"
         style={{ transform: `translate(${scrollY * 0.1}px, ${scrollY * -0.15}px)` }}
