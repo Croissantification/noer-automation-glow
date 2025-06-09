@@ -10,6 +10,35 @@ const ParallaxBackground = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Neural network node positions
+  const networkNodes = [
+    { x: 10, y: 15, size: 8, delay: 0 },
+    { x: 25, y: 25, size: 6, delay: 0.5 },
+    { x: 15, y: 40, size: 10, delay: 1 },
+    { x: 35, y: 35, size: 7, delay: 1.5 },
+    { x: 45, y: 20, size: 9, delay: 2 },
+    { x: 55, y: 45, size: 8, delay: 2.5 },
+    { x: 70, y: 30, size: 6, delay: 3 },
+    { x: 80, y: 50, size: 11, delay: 3.5 },
+    { x: 65, y: 65, size: 7, delay: 4 },
+    { x: 85, y: 15, size: 9, delay: 4.5 },
+    { x: 90, y: 75, size: 8, delay: 5 },
+    { x: 20, y: 70, size: 10, delay: 5.5 },
+    { x: 40, y: 80, size: 6, delay: 6 },
+    { x: 75, y: 85, size: 8, delay: 6.5 }
+  ];
+
+  // Neural network connections
+  const networkConnections = [
+    { from: 0, to: 1 }, { from: 0, to: 2 }, { from: 1, to: 3 },
+    { from: 2, to: 3 }, { from: 3, to: 4 }, { from: 4, to: 5 },
+    { from: 5, to: 6 }, { from: 6, to: 7 }, { from: 7, to: 8 },
+    { from: 8, to: 9 }, { from: 9, to: 10 }, { from: 10, to: 11 },
+    { from: 11, to: 12 }, { from: 12, to: 13 }, { from: 1, to: 4 },
+    { from: 2, to: 5 }, { from: 3, to: 6 }, { from: 5, to: 8 },
+    { from: 6, to: 9 }, { from: 7, to: 11 }, { from: 8, to: 12 }
+  ];
+
   return (
     <div className="fixed inset-0 parallax-bg pointer-events-none z-0">
       {/* Base gradient layer */}
@@ -27,6 +56,89 @@ const ParallaxBackground = () => {
           backgroundSize: '60px 60px'
         }}
       ></div>
+
+      {/* Neural Network Layer */}
+      <div 
+        className="absolute inset-0 opacity-30"
+        style={{ transform: `translateY(${scrollY * 0.08}px)` }}
+      >
+        {/* Neural network connections */}
+        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="rgb(59, 130, 246)" stopOpacity="0.6" />
+              <stop offset="50%" stopColor="rgb(147, 51, 234)" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="rgb(168, 85, 247)" stopOpacity="0.4" />
+            </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+              <feMerge> 
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          
+          {networkConnections.map((connection, index) => {
+            const fromNode = networkNodes[connection.from];
+            const toNode = networkNodes[connection.to];
+            return (
+              <line
+                key={index}
+                x1={`${fromNode.x}%`}
+                y1={`${fromNode.y}%`}
+                x2={`${toNode.x}%`}
+                y2={`${toNode.y}%`}
+                stroke="url(#connectionGradient)"
+                strokeWidth="1.5"
+                filter="url(#glow)"
+                className="animate-pulse"
+                style={{ 
+                  animationDelay: `${index * 0.3}s`,
+                  animationDuration: `${2 + (index % 3)}s`
+                }}
+              />
+            );
+          })}
+        </svg>
+
+        {/* Neural network nodes */}
+        {networkNodes.map((node, index) => (
+          <div
+            key={index}
+            className="absolute rounded-full bg-gradient-to-r from-primary to-secondary animate-pulse"
+            style={{
+              left: `${node.x}%`,
+              top: `${node.y}%`,
+              width: `${node.size}px`,
+              height: `${node.size}px`,
+              transform: `translate(-50%, -50%) translateY(${scrollY * (0.05 + index * 0.002)}px)`,
+              animationDelay: `${node.delay}s`,
+              animationDuration: `${2 + (index % 4)}s`,
+              boxShadow: '0 0 10px rgba(59, 130, 246, 0.5)'
+            }}
+          ></div>
+        ))}
+
+        {/* Data flow particles along connections */}
+        {networkConnections.slice(0, 8).map((connection, index) => {
+          const fromNode = networkNodes[connection.from];
+          const toNode = networkNodes[connection.to];
+          return (
+            <div
+              key={`particle-${index}`}
+              className="absolute w-1 h-1 bg-accent rounded-full animate-float"
+              style={{
+                left: `${fromNode.x + (toNode.x - fromNode.x) * 0.3}%`,
+                top: `${fromNode.y + (toNode.y - fromNode.y) * 0.3}%`,
+                animationDelay: `${index * 0.5}s`,
+                animationDuration: `${3 + (index % 3)}s`,
+                transform: `translateY(${scrollY * (0.03 + index * 0.01)}px)`
+              }}
+            ></div>
+          );
+        })}
+      </div>
 
       {/* Large floating orbs with parallax */}
       <div 
