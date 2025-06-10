@@ -1,13 +1,124 @@
 
 import { ChevronDown } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const Hero = () => {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const scrollToAbout = () => {
     document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <section className="min-h-screen flex flex-col items-center justify-center relative px-4 overflow-hidden">
+      {/* Parallax Background Layers */}
+      <div className="absolute inset-0 parallax-bg">
+        {/* Base gradient layer */}
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-card"></div>
+        
+        {/* Animated geometric grid */}
+        <div 
+          className="absolute inset-0 opacity-10"
+          style={{
+            transform: `translateY(${scrollY * 0.1}px)`,
+            backgroundImage: `
+              linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: '60px 60px'
+          }}
+        ></div>
+
+        {/* Large floating orbs with parallax */}
+        <div 
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full blur-3xl animate-pulse"
+          style={{ transform: `translate(${scrollY * 0.15}px, ${scrollY * 0.1}px)` }}
+        ></div>
+        
+        <div 
+          className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-gradient-to-l from-accent/15 to-primary/15 rounded-full blur-3xl"
+          style={{ 
+            transform: `translate(${scrollY * -0.2}px, ${scrollY * 0.08}px)`,
+            animationDelay: '1s'
+          }}
+        ></div>
+
+        <div 
+          className="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-br from-secondary/10 to-accent/10 rounded-full blur-2xl"
+          style={{ transform: `translate(-50%, -50%) translate(${scrollY * 0.05}px, ${scrollY * -0.12}px)` }}
+        ></div>
+
+        {/* Geometric shapes */}
+        <div 
+          className="absolute top-20 right-20 w-32 h-32 border border-primary/20 rotate-45 animate-spin-slow"
+          style={{ transform: `rotate(45deg) translateY(${scrollY * 0.3}px)`, animationDuration: '20s' }}
+        ></div>
+        
+        <div 
+          className="absolute bottom-32 left-16 w-24 h-24 border-2 border-secondary/20 rounded-lg rotate-12"
+          style={{ transform: `rotate(12deg) translateY(${scrollY * -0.2}px)` }}
+        ></div>
+
+        <div 
+          className="absolute top-1/3 right-1/3 w-16 h-16 bg-accent/10 transform rotate-45"
+          style={{ transform: `rotate(45deg) translateY(${scrollY * 0.25}px)` }}
+        ></div>
+
+        {/* Floating particles */}
+        <div className="absolute inset-0">
+          {[...Array(12)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-2 h-2 bg-primary/30 rounded-full animate-float"
+              style={{
+                left: `${15 + (i * 7)}%`,
+                top: `${20 + (i * 5)}%`,
+                animationDelay: `${i * 0.5}s`,
+                animationDuration: `${3 + (i % 3)}s`,
+                transform: `translateY(${scrollY * (0.1 + i * 0.02)}px)`
+              }}
+            ></div>
+          ))}
+        </div>
+
+        {/* Radial gradient overlay */}
+        <div 
+          className="absolute inset-0 bg-gradient-radial from-transparent via-background/20 to-background/60"
+          style={{ transform: `translateY(${scrollY * 0.05}px)` }}
+        ></div>
+
+        {/* Neural network-like connecting lines */}
+        <div className="absolute inset-0 opacity-5">
+          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="rgb(59, 130, 246)" />
+                <stop offset="100%" stopColor="rgb(147, 51, 234)" />
+              </linearGradient>
+            </defs>
+            {[...Array(8)].map((_, i) => (
+              <line
+                key={i}
+                x1={`${i * 15}%`}
+                y1="10%"
+                x2={`${85 - i * 10}%`}
+                y2="90%"
+                stroke="url(#lineGradient)"
+                strokeWidth="1"
+                className="animate-pulse"
+                style={{ animationDelay: `${i * 0.3}s` }}
+              />
+            ))}
+          </svg>
+        </div>
+      </div>
+
       {/* Main content */}
       <div className="text-center fade-in relative z-10">
         <h1 className="text-8xl md:text-9xl font-bold gradient-text mb-8 tracking-tight">
