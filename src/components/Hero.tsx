@@ -12,12 +12,9 @@ const Hero = () => {
       <div className="text-center fade-in relative z-10">
         <div className="mb-8">
           <img 
-            src="/lovable-uploads/5303a8d7-de63-46cd-a6b0-bbadbd39c951.png" 
+            src="/lovable-uploads/51808f1d-6d5d-42f8-b060-dcbdca2422de.png" 
             alt="Noer Logo" 
-            className="w-96 h-auto mx-auto filter brightness-0 invert"
-            style={{
-              filter: 'brightness(0) saturate(100%) invert(42%) sepia(93%) saturate(1352%) hue-rotate(207deg) brightness(97%) contrast(96%)'
-            }}
+            className="w-96 h-auto mx-auto"
           />
         </div>
         
