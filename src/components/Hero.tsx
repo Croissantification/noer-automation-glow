@@ -10,9 +10,16 @@ const Hero = () => {
     <section className="min-h-screen flex flex-col items-center justify-center relative px-4 overflow-hidden">
       {/* Main content */}
       <div className="text-center fade-in relative z-10">
-        <h1 className="text-8xl md:text-9xl font-bold gradient-text mb-8 tracking-tight">
-          Noer
-        </h1>
+        <div className="mb-8">
+          <img 
+            src="/lovable-uploads/7d2a78a4-1219-4941-be6d-66d8b7070034.png" 
+            alt="Noer Logo" 
+            className="h-32 md:h-40 mx-auto object-contain"
+            style={{
+              filter: 'brightness(0) saturate(100%) invert(52%) sepia(94%) saturate(2455%) hue-rotate(209deg) brightness(94%) contrast(91%)'
+            }}
+          />
+        </div>
         
         {/* Subtle tagline that appears after the main logo */}
         <div className="fade-in-delay">
