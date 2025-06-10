@@ -14,7 +14,7 @@ const Hero = () => {
           <img 
             src="/lovable-uploads/51808f1d-6d5d-42f8-b060-dcbdca2422de.png" 
             alt="Noer Logo" 
-            className="w-96 h-auto mx-auto"
+            className="w-[500px] h-auto mx-auto"
           />
         </div>
         
