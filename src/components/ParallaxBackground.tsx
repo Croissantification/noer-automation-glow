@@ -1,5 +1,5 @@
-
 import { useEffect, useState } from "react";
+import CursorIllumination from "./CursorIllumination";
 
 const ParallaxBackground = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -12,6 +12,9 @@ const ParallaxBackground = () => {
 
   return (
     <div className="fixed inset-0 parallax-bg pointer-events-none z-0">
+      {/* Cursor illumination effect */}
+      <CursorIllumination />
+      
       {/* Base gradient layer */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-card"></div>
       
