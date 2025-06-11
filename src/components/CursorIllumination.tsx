@@ -31,7 +31,7 @@ const CursorIllumination = () => {
 
   return (
     <div 
-      className={`fixed inset-0 pointer-events-none z-10 transition-opacity duration-500 ${
+      className={`fixed inset-0 pointer-events-none z-10 transition-opacity duration-[2000ms] ease-out ${
         isMoving ? 'opacity-100' : 'opacity-0'
       }`}
       style={{
