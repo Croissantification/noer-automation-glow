@@ -10,7 +10,7 @@ const Index = () => {
   return (
     <div className="min-h-screen relative">
       <ParallaxBackground />
-      <div className="relative z-10">
+      <div className="relative z-20">
         <Hero />
         <About />
         <Pricing />

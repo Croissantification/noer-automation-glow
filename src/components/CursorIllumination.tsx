@@ -15,10 +15,10 @@ const CursorIllumination = () => {
 
   return (
     <div 
-      className="fixed inset-0 pointer-events-none z-0 transition-opacity duration-300"
+      className="fixed inset-0 pointer-events-none z-10 transition-opacity duration-300"
       style={{
-        background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(59, 130, 246, 0.15), rgba(147, 51, 234, 0.1) 40%, transparent 70%)`,
-        transition: 'background 0.2s ease-out'
+        background: `radial-gradient(400px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.15) 40%, transparent 70%)`,
+        transition: 'background 0.1s ease-out'
       }}
     />
   );
