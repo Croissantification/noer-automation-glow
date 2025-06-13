@@ -15,7 +15,7 @@ const CursorIllumination = () => {
 
   return (
     <div 
-      className="fixed inset-0 pointer-events-none z-10 transition-opacity duration-300"
+      className="fixed inset-0 pointer-events-none z-10 transition-opacity duration-300 animate-pulse"
       style={{
         background: `radial-gradient(200px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.15) 40%, transparent 70%)`,
         transition: 'background 0.1s ease-out'
